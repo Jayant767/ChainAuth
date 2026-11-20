@@ -1,0 +1,51 @@
+server:
+  port: ${SERVER_PORT:8080}
+spring:
+  application:
+    name: chainauth
+  data:
+    mongodb:
+      auto-index-creation: true
+      uri: ${MONGODB_URI:mongodb://localhost:27017/chainauth}
+  jackson:
+    default-property-inclusion: non_null
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
+app:
+  cors:
+    allowed-origin: ${FRONTEND_ORIGIN:http://localhost:5173}
+  blockchain:
+    rpc-url: ${ETHEREUM_RPC_URL:http://127.0.0.1:8545}
+    chain-id: ${ETHEREUM_CHAIN_ID:31337}
+    contract-address: ${IDENTITY_REGISTRY_ADDRESS:}
+    signer-private-key: ${BLOCKCHAIN_SIGNER_PRIVATE_KEY:}
+    gas-limit: ${BLOCKCHAIN_GAS_LIMIT:600000}
+    confirmations: ${BLOCKCHAIN_CONFIRMATIONS:3}
+    max-sync-attempts: ${BLOCKCHAIN_MAX_SYNC_ATTEMPTS:5}
+    transaction-timeout-seconds: ${BLOCKCHAIN_TRANSACTION_TIMEOUT_SECONDS:600}
+    sync-poll-ms: ${BLOCKCHAIN_SYNC_POLL_MS:5000}
+    event-start-block: ${BLOCKCHAIN_EVENT_START_BLOCK:0}
+    event-poll-ms: ${BLOCKCHAIN_EVENT_POLL_MS:15000}
+  security:
+    # Override in deployment with a random secret of at least 32 bytes.
+    jwt-secret: ${JWT_SECRET:local-development-secret-change-this-before-deploy-2026}
+    audit-hash-secret: ${AUDIT_HASH_SECRET:local-audit-hash-secret-change-before-deploy}
+    access-token-seconds: ${ACCESS_TOKEN_SECONDS:900}
+    refresh-token-days: ${REFRESH_TOKEN_DAYS:7}
+    secure-cookie: ${SECURE_COOKIE:false}
+    rate-limit-per-minute: ${AUTH_RATE_LIMIT_PER_MINUTE:10}
+    rate-limit-window-ms: ${AUTH_RATE_LIMIT_WINDOW_MS:60000}
+  wallet:
+    siwe-domain: ${SIWE_DOMAIN:localhost:5173}
+    siwe-uri: ${SIWE_URI:http://localhost:5173}
+    nonce-ttl-seconds: ${SIWE_NONCE_TTL_SECONDS:300}
+logging:
+  level:
+    root: INFO
+    com.chainauth: INFO
